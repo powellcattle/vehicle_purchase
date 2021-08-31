@@ -37,7 +37,7 @@ class Model(Enum):
 
 class Vehicle:
 
-    def __init__(self, stock_number: int, vin: str, manufacture: Manufacture, model: Model, year: int,
+    def __init__(self, stock_number: int, vin: str, manufacture: Manufacture, model: Model, year: int, image: bytes,
                  purchase_date: datetime, purchase_price: int, title: Title):
         self.vehicle = dict()
         if stock_number and type(stock_number) == int:
@@ -65,6 +65,9 @@ class Vehicle:
         else:
             raise ValueError('Year is an unknown value')
 
+        if image and type(image) == bytes:
+            self.vehicle['image'] = image
+
         if purchase_date and type(purchase_date) == datetime.datetime:
             self.vehicle['purchase_date'] = purchase_date
         else:
@@ -80,7 +83,11 @@ class Vehicle:
         else:
             self.vehicle['title'] = None
 
+
+
     def find(self):
+        # with open("test2.jpg", "wb") as fimage:
+        # fimage.write(str.decode('base64'))
         return NotImplemented()
 
     def insert_one(self, db: pymongo.database.Database):

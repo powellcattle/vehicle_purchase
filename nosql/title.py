@@ -58,7 +58,7 @@ class State(Enum):
 
 class Title:
 
-    def __init__(self, title_number: str, state: State, odometer: int):
+    def __init__(self, title_number: str, state: State, odometer: int, image: bytes):
         self.title = dict()
 
         if title_number and type(title_number) == str:
@@ -75,6 +75,9 @@ class Title:
             self.title['state'] = state.name
         else:
             raise ValueError('State is an unknown value')
+
+        if image and type(image) == bytes:
+            self.title['image'] = image
 
 
 def find(self):

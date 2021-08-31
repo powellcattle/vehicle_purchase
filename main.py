@@ -1,8 +1,10 @@
+import base64
 import datetime
 
 import mongoengine
 import pymongo
 
+from nosql.contact import Contact
 from nosql.title import State, Title
 from nosql.vehicle import Vehicle, Manufacture, Model
 
@@ -10,7 +12,20 @@ conn_str = "mongodb://spowell:n2329w@localhost:27017"
 cl = pymongo.MongoClient(conn_str)
 db = cl['vehicle_db']
 
-title = Title(title_number='19600705023', state=State.TX, odometer=79)
+contact = Contact(first_name='scot', last_name='powell')
+contact.insert_one(db)
+buyer = contact.find_one(db, {'first_name':'SCOT', 'last_name' : 'POWELL'})
+
+
+
+
+with open("images/c10.JPG", "rb") as imageFile:
+    c10_bytes = base64.b64encode(imageFile.read())
+
+with open("images/title.JPG", "rb") as imageFile:
+    title_bytes = base64.b64encode(imageFile.read())
+
+title = Title(title_number='19600705023', state=State.TX, odometer=79, image=title_bytes)
 
 v = Vehicle(stock_number=1,
             vin='97507329',
@@ -19,7 +34,8 @@ v = Vehicle(stock_number=1,
             year=1969,
             purchase_date=datetime.datetime(year=2021, month=6, day=27),
             purchase_price=8250,
-            title=title
+            title=title,
+            image=c10_bytes
             )
 v.insert_one(db)
 #
