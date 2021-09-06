@@ -58,7 +58,7 @@ class State(Enum):
 
 class Title:
 
-    def __init__(self, title_number: str, state: State, odometer: int, image: bytes):
+    def __init__(self, title_number: str, state: State, odometer: int, title_image: bytes):
         self.title = dict()
 
         if title_number and type(title_number) == str:
@@ -76,8 +76,8 @@ class Title:
         else:
             raise ValueError('State is an unknown value')
 
-        if image and type(image) == bytes:
-            self.title['image'] = image
+        if title_image and type(title_image) == bytes:
+            self.title['image'] = title_image
 
 
 def find(self):
@@ -86,7 +86,7 @@ def find(self):
 
 def insert_one(self, db: pymongo.database.Database):
     col = db['titles']
-    col.insert_one(self.title)
+    col.insert_one(self.atitle)
 
 
 def delete(self):

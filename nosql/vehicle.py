@@ -1,9 +1,8 @@
 from enum import Enum
 import datetime
 
-import mongoengine as mongoengine
+import bson.objectid
 import pymongo.database
-from pymongo import database
 
 from nosql.title import Title
 
@@ -37,8 +36,9 @@ class Model(Enum):
 
 class Vehicle:
 
-    def __init__(self, stock_number: int, vin: str, manufacture: Manufacture, model: Model, year: int, image: bytes,
-                 purchase_date: datetime, purchase_price: int, title: Title):
+    def __init__(self, stock_number: int, vin: str, manufacture: Manufacture, model: Model, year: int,
+                 vehicle_image: bytes,
+                 purchase_date: datetime, purchase_price: int, title: Title, seller: bson.objectid.ObjectId):
         self.vehicle = dict()
         if stock_number and type(stock_number) == int:
             self.vehicle['stock_number'] = stock_number
@@ -65,8 +65,15 @@ class Vehicle:
         else:
             raise ValueError('Year is an unknown value')
 
-        if image and type(image) == bytes:
-            self.vehicle['image'] = image
+        if seller and type(seller) == bson.objectid.ObjectId:
+            self.vehicle['seller'] = seller
+        else:
+            self.vehicle['seller'] = None
+
+        if vehicle_image and type(vehicle_image) == bytes:
+            self.vehicle['vehicle_image'] = vehicle_image
+        else:
+            self.vehicle['vehicle_image'] = None
 
         if purchase_date and type(purchase_date) == datetime.datetime:
             self.vehicle['purchase_date'] = purchase_date
@@ -82,8 +89,6 @@ class Vehicle:
             self.vehicle['title'] = title.title
         else:
             self.vehicle['title'] = None
-
-
 
     def find(self):
         # with open("test2.jpg", "wb") as fimage:
